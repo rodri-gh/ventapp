@@ -28,30 +28,39 @@
         <div
             v-for="(ingrediente, index) in ingredientes"
             :key="index"
-            class="mb-3"
+            class="row mb-3"
         >
-            <label for="nombreIngrediente" class="form-label">Nombre:</label>
-            <input
-                v-model="ingrediente.nombre"
-                type="text"
-                id="nombreIngrediente"
-                class="form-control border-dark"
-            />
-            <label for="precio" class="form-label">Precio:</label>
-            <input
-                v-model="ingrediente.precio"
-                type="number"
-                step="0.01"
-                id="precio"
-                class="form-control border-dark"
-            />
-            <button
-                @click.prevent="eliminarIngrediente(index, $event)"
-                class="btn btn-danger mt-2"
-            >
-                Eliminar
-            </button>
+            <div class="col-7">
+                <label for="nombreIngrediente" class="form-label"
+                    >Nombre:</label
+                >
+                <input
+                    v-model="ingrediente.nombre"
+                    type="text"
+                    id="nombreIngrediente"
+                    class="form-control border-dark"
+                />
+            </div>
+            <div class="col-3">
+                <label for="precio" class="form-label">Precio:</label>
+                <input
+                    v-model="ingrediente.precio"
+                    type="number"
+                    step="0.01"
+                    id="precio"
+                    class="form-control border-dark"
+                />
+            </div>
+            <div class="col-2 d-flex align-items-end">
+                <button
+                    @click.prevent="eliminarIngrediente(index, $event)"
+                    class="btn btn-danger w-100"
+                >
+                    -
+                </button>
+            </div>
         </div>
+
         <div class="mb-3">
             <label for="costoTotal" class="form-label"
                 >Costo total de los ingredientes:</label
