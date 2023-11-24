@@ -1,45 +1,102 @@
 <template>
     <Menu />
-    <div v-if="venta">
+    <div v-if="venta" class="container mt-3">
         <form @submit.prevent="submitForm">
-            <div>
-                <label>Nombre del producto:</label>
-                <input v-model="venta.nombreProducto" type="text" />
+            <h3 class="text-center">Editar Venta</h3>
+            <div class="mb-3">
+                <label for="nombreProducto" class="form-label"
+                    >Nombre del producto:</label
+                >
+                <input
+                    v-model="venta.nombreProducto"
+                    type="text"
+                    id="nombreProducto"
+                    class="form-control border-dark"
+                />
             </div>
-            <div>
-                <label>Fecha:</label>
-                <input v-model="venta.fecha" type="date" />
+            <div class="mb-3">
+                <label for="fecha" class="form-label">Fecha:</label>
+                <input
+                    v-model="venta.fecha"
+                    type="date"
+                    id="fecha"
+                    class="form-control border-dark"
+                />
             </div>
+            <hr class="my-2 border-dark" />
+            <h3 class="text-center">Ingredientes</h3>
+
             <div
                 v-for="(ingrediente, index) in venta.ingredientes"
                 :key="index"
+                class="mb-3"
             >
-                <label>Nombre del ingrediente:</label>
-                <input v-model="ingrediente.nombre" type="text" />
-                <label>Precio:</label>
-                <input v-model="ingrediente.precio" type="number" step="0.01" />
-                <button @click.prevent="eliminarIngrediente(index, $event)">
+                <label for="nombreIngrediente" class="form-label"
+                    >Nombre:</label
+                >
+                <input
+                    v-model="ingrediente.nombre"
+                    type="text"
+                    id="nombreIngrediente"
+                    class="form-control border-dark"
+                />
+                <label for="precio" class="form-label">Precio:</label>
+                <input
+                    v-model="ingrediente.precio"
+                    type="number"
+                    step="0.01"
+                    id="precio"
+                    class="form-control border-dark"
+                />
+                <button
+                    @click.prevent="eliminarIngrediente(index, $event)"
+                    class="btn btn-danger mt-2"
+                >
                     Eliminar
                 </button>
             </div>
 
-            <div>
-                <label>Costo total de los ingredientes:</label>
-                <span>{{ totalGastoIngredientes }}</span>
+            <div class="mb-3">
+                <label for="costoTotal" class="form-label"
+                    >Costo total de los ingredientes:</label
+                >
+                <span id="costoTotal" class="form-text">{{
+                    totalGastoIngredientes
+                }}</span>
             </div>
-            <button @click="agregarIngrediente" type="button">
+            <button
+                @click="agregarIngrediente"
+                type="button"
+                class="btn btn-primary mb-3"
+            >
                 Agregar ingrediente
             </button>
-            <div>
-                <label>Facturación:</label>
-                <input v-model="venta.facturacion" type="number" step="0.01" />
+            <hr class="my-2 border-dark" />
+            <h3 class="text-center">Facturación y Ganancia</h3>
+            <div class="mb-3">
+                <label for="facturacion" class="form-label">Facturación:</label>
+                <input
+                    v-model="venta.facturacion"
+                    type="number"
+                    step="0.01"
+                    id="facturacion"
+                    class="form-control border-dark"
+                />
             </div>
-            <div>
-                <label>Ganancia:</label>
-                <span>{{ ganancia }}</span>
+            <div class="mb-3">
+                <label for="ganancia" class="form-label">Ganancia:</label>
+                <span id="ganancia" class="form-text">{{ ganancia }}</span>
             </div>
-            <button type="submit">Guardar</button>
-            <button type="button" @click="cancelar">Cancelar</button>
+            <div class="d-flex justify-content-between mb-3">
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button
+                    type="button"
+                    @click="cancelar"
+                    class="btn btn-secondary ms-2"
+                >
+                    Cancelar
+                </button>
+            </div>
         </form>
     </div>
 </template>

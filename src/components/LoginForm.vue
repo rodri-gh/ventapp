@@ -1,8 +1,26 @@
 <template>
-    <form @submit.prevent="submitForm">
-        <input v-model="email" type="email" placeholder="Correo" />
-        <input v-model="password" type="password" placeholder="Contraseña" />
-        <button type="submit">Iniciar sesión</button>
+    <form @submit.prevent="submitForm" class="container">
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo</label>
+            <input
+                v-model="email"
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="Correo"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input
+                v-model="password"
+                type="password"
+                class="form-control"
+                id="password"
+                placeholder="Contraseña"
+            />
+        </div>
+        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
     </form>
 </template>
 

@@ -1,23 +1,18 @@
 <template>
     <Menu />
-    <div>
-        <button @click="goToRegistroVenta">Registrar venta</button>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre del producto</th>
-                    <th>Fecha</th>
-                    <th>Total de gasto de los ingredientes</th>
-                    <th>Total facturación</th>
-                    <th>Ganancia</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="venta in ventas" :key="venta.id">
-                    <td>{{ venta.nombreProducto }}</td>
-                    <td>{{ venta.fecha }}</td>
-                    <td>
+    <div class="container mt-3">
+        <button @click="goToRegistroVenta" class="btn btn-primary mb-3">
+            Registrar venta
+        </button>
+        <div v-if="ventas.length">
+            <div v-for="venta in ventas" :key="venta.id" class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title text-center">
+                        {{ venta.nombreProducto }}
+                    </h5>
+                    <p><strong>Fecha:</strong> {{ venta.fecha }}</p>
+                    <p>
+                        <strong>Total de gasto de los ingredientes:</strong>
                         {{
                             venta.ingredientes.reduce(
                                 (total, ingrediente) =>
@@ -25,16 +20,32 @@
                                 0
                             )
                         }}
-                    </td>
-                    <td>{{ venta.facturacion }}</td>
-                    <td>{{ venta.ganancia }}</td>
-                    <td>
-                        <button @click="editar(venta.id)">Editar</button>
-                        <button @click="ver(venta.id)">Ver</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </p>
+                    <p>
+                        <strong>Total facturación:</strong>
+                        {{ venta.facturacion }}
+                    </p>
+                    <p><strong>Ganancia:</strong> {{ venta.ganancia }}</p>
+                    <div class="d-flex justify-content-between">
+                        <button
+                            id="button"
+                            @click="editar(venta.id)"
+                            class="btn btn-warning"
+                        >
+                            Editar
+                        </button>
+                        <button
+                            id="button"
+                            @click="ver(venta.id)"
+                            class="btn btn-info"
+                        >
+                            Ver
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="text-center" v-else>No hay ventas registradas</p>
     </div>
 </template>
 
@@ -74,3 +85,8 @@ const ver = (id) => {
 };
 cargarVentas();
 </script>
+<style scoped>
+#button {
+    width: 100px;
+}
+</style>

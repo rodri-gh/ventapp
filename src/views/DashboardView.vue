@@ -1,11 +1,44 @@
 <template>
     <Menu />
-    <div>
-        <h2>Dashboard</h2>
-        <p>Cantidad de ventas realizadas: {{ ventas.length }}</p>
-        <p>Total gasto en ingredientes: {{ totalGastoIngredientes }}</p>
-        <p>Total facturación: {{ totalFacturacion }}</p>
-        <p>Total ganancias: {{ totalGanancias }}</p>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="bi bi-cart-check-fill fs-1 text-primary"></i>
+                        <h5 class="card-title">Ventas realizadas</h5>
+                        <p class="card-text">{{ ventas.length }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="bi bi-cash-stack fs-1 text-success"></i>
+                        <h5 class="card-title">Total gasto en ingredientes</h5>
+                        <p class="card-text">{{ totalGastoIngredientes }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="bi bi-receipt-cutoff fs-1 text-info"></i>
+                        <h5 class="card-title">Total facturación</h5>
+                        <p class="card-text">{{ totalFacturacion }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="bi bi-wallet2 fs-1 text-warning"></i>
+                        <h5 class="card-title">Total ganancias</h5>
+                        <p class="card-text">{{ totalGanancias }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
