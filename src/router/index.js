@@ -52,6 +52,10 @@ const router = createRouter({
             name: 'editar',
             component: EditarVentaView,
         },
+        {
+            path: '/:catchAll(.*)',
+            redirect: '/',
+        },
     ],
 });
 
