@@ -3,12 +3,12 @@
     "short_name": "Venta App",
     "icons": [
         {
-            "src": "/public/icons/192x192.png",
+            "src": "/icons/192x192.png",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "/public/icons/512x512.png",
+            "src": "/icons/512x512.png",
             "type": "image/png",
             "sizes": "512x512"
         }

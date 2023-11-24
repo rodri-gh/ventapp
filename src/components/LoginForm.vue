@@ -7,7 +7,7 @@
                 type="email"
                 class="form-control"
                 id="email"
-                placeholder="Correo"
+                placeholder="alguien@correo.com"
             />
         </div>
         <div class="mb-3">
@@ -17,7 +17,7 @@
                 type="password"
                 class="form-control"
                 id="password"
-                placeholder="Contraseña"
+                placeholder="*********"
             />
         </div>
         <button type="submit" class="btn btn-primary">Iniciar sesión</button>
