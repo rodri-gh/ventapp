@@ -42,14 +42,18 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { auth, db } from '../../firebase';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import Menu from '../components/Menu.vue';
 
 const ventas = ref([]);
 const router = useRouter();
 
 const cargarVentas = async () => {
-    const q = query(collection(db, 'ventas'), orderBy('fecha', 'desc'));
+    const q = query(
+        collection(db, 'ventas'),
+        where('userId', '==', auth.currentUser.uid),
+        orderBy('fecha', 'desc')
+    );
     const querySnapshot = await getDocs(q);
     ventas.value = querySnapshot.docs.map((doc) => ({
         id: doc.id,

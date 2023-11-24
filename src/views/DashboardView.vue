@@ -11,14 +11,18 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import Menu from '../components/Menu.vue';
 import { auth, db } from '../../firebase';
 
 const ventas = ref([]);
 
 const cargarVentas = async () => {
-    const querySnapshot = await getDocs(collection(db, 'ventas'));
+    const q = query(
+        collection(db, 'ventas'),
+        where('userId', '==', auth.currentUser.uid)
+    );
+    const querySnapshot = await getDocs(q);
     ventas.value = querySnapshot.docs.map((doc) => doc.data());
 };
 
