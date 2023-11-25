@@ -10,22 +10,38 @@
                     <h5 class="card-title text-center">
                         {{ venta.nombreProducto }}
                     </h5>
-                    <p><strong>Fecha:</strong> {{ venta.fecha }}</p>
-                    <p>
+                    <div
+                        class="d-flex justify-content-between mb-3 border-bottom pb-2"
+                    >
+                        <strong>Fecha:</strong>
+                        <span>{{ venta.fechaFormateada }}</span>
+                    </div>
+
+                    <div
+                        class="d-flex justify-content-between mb-3 border-bottom pb-2"
+                    >
                         <strong>Total de gasto de los ingredientes:</strong>
-                        {{
+                        <span>{{
                             venta.ingredientes.reduce(
                                 (total, ingrediente) =>
                                     total + ingrediente.precio,
                                 0
                             )
-                        }}
-                    </p>
-                    <p>
+                        }}</span>
+                    </div>
+                    <div
+                        class="d-flex justify-content-between mb-3 border-bottom pb-2"
+                    >
                         <strong>Total facturación:</strong>
-                        {{ venta.facturacion }}
-                    </p>
-                    <p><strong>Ganancia:</strong> {{ venta.ganancia }}</p>
+                        <span>{{ venta.facturacion }}</span>
+                    </div>
+                    <div
+                        class="d-flex justify-content-between mb-3 border-bottom pb-2"
+                    >
+                        <strong>Ganancia:</strong>
+                        <span class="fw-bold fs-6">{{ venta.ganancia }}</span>
+                    </div>
+
                     <div class="d-flex justify-content-between">
                         <button
                             id="button"
@@ -55,6 +71,7 @@ import { useRouter } from 'vue-router';
 import { auth, db } from '../../firebase';
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import Menu from '../components/Menu.vue';
+import { format } from 'date-fns';
 
 const ventas = ref([]);
 const router = useRouter();
@@ -66,10 +83,14 @@ const cargarVentas = async () => {
         orderBy('fecha', 'desc')
     );
     const querySnapshot = await getDocs(q);
-    ventas.value = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-    }));
+    ventas.value = querySnapshot.docs.map((doc) => {
+        let venta = {
+            id: doc.id,
+            ...doc.data(),
+        };
+        venta.fechaFormateada = format(new Date(venta.fecha), 'dd-MM-yyyy');
+        return venta;
+    });
 };
 
 const goToRegistroVenta = () => {

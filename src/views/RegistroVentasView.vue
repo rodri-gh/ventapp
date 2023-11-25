@@ -65,7 +65,7 @@
             <label for="costoTotal" class="form-label"
                 >Costo total de los ingredientes:</label
             >
-            <span id="costoTotal" class="form-text">
+            <span id="costoTotal" class="form-text text-dark fw-bold fs-6">
                 {{
                     ingredientes.reduce(
                         (total, ingrediente) => total + ingrediente.precio,
@@ -95,10 +95,18 @@
         </div>
         <div class="mb-3">
             <label for="ganancia" class="form-label">Ganancia:</label>
-            <span id="ganancia" class="form-text">{{ ganancia }}</span>
+            <span id="ganancia" class="form-text fw-bold fs-6">{{
+                ganancia
+            }}</span>
         </div>
         <div class="d-flex justify-content-between mb-3">
-            <button type="submit" class="btn btn-success">Guardar</button>
+            <button
+                type="submit"
+                class="btn btn-success"
+                :disabled="deshabilitarBoton"
+            >
+                {{ estadoBoton }}
+            </button>
             <button
                 type="button"
                 @click="cancelar"
@@ -121,7 +129,8 @@ const nombreProducto = ref('');
 const ingredientes = ref([{ nombre: '', precio: null }]);
 const facturacion = ref(null);
 const fecha = ref(null);
-
+const estadoBoton = ref('Guardar');
+const deshabilitarBoton = ref(false);
 const router = useRouter();
 
 const ganancia = computed(() => {
@@ -148,6 +157,10 @@ const eliminarIngrediente = (index, event) => {
 
 const submitForm = async () => {
     try {
+        // Cambia el estado del botón a "Guardando..." y deshabilítalo
+        estadoBoton.value = 'Guardando...';
+        deshabilitarBoton.value = true;
+
         const venta = {
             userId: auth.currentUser.uid,
             nombreProducto: nombreProducto.value,
@@ -161,6 +174,9 @@ const submitForm = async () => {
         router.push('/ventas');
     } catch (error) {
         console.error(error);
+        // Si hay un error, cambia el estado del botón a "Guardar" y habilita el botón
+        estadoBoton.value = 'Guardar';
+        deshabilitarBoton.value = false;
     }
 };
 
