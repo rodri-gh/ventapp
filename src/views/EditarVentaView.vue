@@ -152,13 +152,7 @@ const ganancia = computed(() => {
 });
 const eliminarIngrediente = (index, event) => {
     event.preventDefault();
-    if (
-        confirm(
-            `¿Estás seguro de que deseas eliminar el ingrediente ${venta.value.ingredientes[index].nombre} que tiene un costo de ${venta.value.ingredientes[index].precio}?`
-        )
-    ) {
-        venta.value.ingredientes.splice(index, 1);
-    }
+    venta.value.ingredientes.splice(index, 1);
 };
 
 const submitForm = async () => {

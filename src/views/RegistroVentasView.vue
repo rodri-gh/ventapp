@@ -146,13 +146,7 @@ const agregarIngrediente = () => {
 };
 const eliminarIngrediente = (index, event) => {
     event.preventDefault();
-    if (
-        confirm(
-            `¿Estás seguro de que deseas eliminar el ingrediente ${ingredientes.value[index].nombre} que tiene un costo de ${ingredientes.value[index].precio}?`
-        )
-    ) {
-        ingredientes.value.splice(index, 1);
-    }
+    ingredientes.value.splice(index, 1);
 };
 
 const submitForm = async () => {

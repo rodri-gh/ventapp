@@ -37,7 +37,8 @@ const router = useRouter();
 const submitForm = async () => {
     try {
         await signInWithEmailAndPassword(auth, email.value, password.value);
-        router.push('/dashboard');
+        window.location.href = '/dashboard';
+        //router.push('/dashboard'); // No siempre funciona no se porque
     } catch (error) {
         console.error(error);
     }
