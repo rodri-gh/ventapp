@@ -41,7 +41,8 @@
                         class="d-flex justify-content-between mb-3 border-bottom pb-2"
                     >
                         <strong>Facturación:</strong>
-                        <span>{{ venta.facturacion }} Bs.</span>
+                        <!-- si es null mostrar 0 y si no mostrar la facturacion -->
+                        <span>{{ venta.facturacion | 0 }} Bs.</span>
                     </div>
                     <div
                         class="d-flex justify-content-between mb-3 border-bottom pb-2"

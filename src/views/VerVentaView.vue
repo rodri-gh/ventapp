@@ -37,7 +37,7 @@
                 <h5 class="card-title text-center">Facturación y Ganancias</h5>
                 <p>
                     <strong>Facturación:</strong>
-                    {{ venta.facturacion }} Bs.
+                    {{ venta.facturacion | 0 }} Bs.
                 </p>
                 <p><strong>Ganancia:</strong> {{ venta.ganancia }} Bs.</p>
             </div>
