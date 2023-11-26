@@ -47,10 +47,15 @@
                 </div>
             </div>
         </div>
+        <div class="mt-3 d-flex justify-content-end">
+            <button @click="descargarPDF" class="btn btn-primary mb-3">
+                <i class="bi bi-file-earmark-pdf-fill"></i> PDF
+            </button>
+        </div>
         <div
             v-for="(ventasPorFecha, fecha) in ventasPorFecha"
             :key="fecha"
-            class="card mb-3 mt-3"
+            class="card mb-3"
         >
             <div class="card-body">
                 <h5 class="card-title text-center">
@@ -92,6 +97,9 @@ import { ref, computed } from 'vue';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import Menu from '../components/Menu.vue';
 import { auth, db } from '../../firebase';
+
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const ventas = ref([]);
 
@@ -148,6 +156,88 @@ const ventasPorFecha = computed(() => {
         .sort(([fechaA], [fechaB]) => fechaB.localeCompare(fechaA))
         .reduce((obj, [fecha, data]) => ({ ...obj, [fecha]: data }), {});
 });
+const descargarPDF = () => {
+    const doc = new jsPDF();
+
+    // Agregar el título al PDF
+    const title = 'Resumen de Ventas';
+    const pdfWidth = doc.internal.pageSize.getWidth();
+    doc.setFontSize(18);
+    doc.text(title, pdfWidth / 2, 15, { align: 'center' });
+
+    const columns = [
+        'Fecha',
+        'Productos',
+        'Gasto en Ingredientes',
+        'Facturación',
+        'Ganancia',
+    ];
+    const data = Object.entries(ventasPorFecha.value)
+        .sort(([fechaA], [fechaB]) => fechaA.localeCompare(fechaB)) // Ordenar por fecha en orden ascendente
+        .map(([fecha, venta]) => [
+            fecha,
+            venta && Array.isArray(venta.productos)
+                ? venta.productos.join(', ')
+                : '',
+            venta ? venta.totalGastoIngredientes : 0,
+            venta ? venta.totalFacturacion : 0,
+            venta ? venta.totalGanancias : 0,
+        ]);
+
+    // Calcular los totales
+    const totalGastoIngredientes = data.reduce(
+        (total, venta) => total + venta[2],
+        0
+    );
+    const totalFacturacion = data.reduce((total, venta) => total + venta[3], 0);
+    const totalGanancias = data.reduce((total, venta) => total + venta[4], 0);
+
+    // Agregar la fila de totales al final de los datos
+    data.push([
+        'Total',
+        '',
+        totalGastoIngredientes,
+        totalFacturacion,
+        totalGanancias,
+    ]);
+
+    autoTable(doc, {
+        columns,
+        body: data,
+        styles: { lineWidth: 0.3, lineColor: [211, 211, 211] },
+        startY: 20,
+        didDrawCell: (data) => {
+            // If this row is the last row
+            if (data.row.index === data.table.body.length - 1) {
+                doc.setFillColor(200, 200, 200); // Set the fill color to a light gray
+                doc.rect(
+                    data.cell.x,
+                    data.cell.y,
+                    data.cell.width,
+                    data.cell.height,
+                    'F'
+                ); // Draw a rectangle with the fill color
+                doc.setTextColor(0); // Set the text color to black
+                doc.setFontSize(10); // Set the font size
+                doc.text(
+                    data.cell.text,
+                    data.cell.x + 2,
+                    data.cell.y + data.cell.height / 2,
+                    { align: 'left', baseline: 'middle' }
+                ); // Draw the cell text
+            }
+        }, // Comienza la tabla 30 unidades por debajo del inicio del documento
+    });
+
+    // Obtener la fecha actual
+    const fechaDescarga = new Date();
+    const fechaDescargaString = `${fechaDescarga.getFullYear()}-${
+        fechaDescarga.getMonth() + 1
+    }-${fechaDescarga.getDate()}`;
+
+    // Guardar el PDF con un nombre que incluye la fecha de descarga
+    doc.save(`Resumen_de_ventas_${fechaDescargaString}.pdf`);
+};
 
 cargarVentas();
 </script>
