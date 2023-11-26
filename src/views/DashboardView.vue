@@ -47,6 +47,43 @@
                 </div>
             </div>
         </div>
+        <div
+            v-for="(ventasPorFecha, fecha) in ventasPorFecha"
+            :key="fecha"
+            class="card mb-3 mt-3"
+        >
+            <div class="card-body">
+                <h5 class="card-title text-center">
+                    {{ fecha }}
+                </h5>
+                <div
+                    class="d-flex justify-content-between mb-3 border-bottom pb-2"
+                >
+                    <strong>Productos:</strong>
+                    <span>{{ ventasPorFecha.productos.join(', ') }}</span>
+                </div>
+                <div
+                    class="d-flex justify-content-between mb-3 border-bottom pb-2"
+                >
+                    <strong>Ingredientes:</strong>
+                    <span>{{ ventasPorFecha.totalGastoIngredientes }} Bs.</span>
+                </div>
+                <div
+                    class="d-flex justify-content-between mb-3 border-bottom pb-2"
+                >
+                    <strong>Facturación:</strong>
+                    <span>{{ ventasPorFecha.totalFacturacion }} Bs.</span>
+                </div>
+                <div
+                    class="d-flex justify-content-between mb-3 border-bottom pb-2"
+                >
+                    <strong>Ganancia:</strong>
+                    <span class="fw-bold fs-6"
+                        >{{ ventasPorFecha.totalGanancias }} Bs.</span
+                    >
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -85,6 +122,31 @@ const totalFacturacion = computed(() => {
 
 const totalGanancias = computed(() => {
     return ventas.value.reduce((total, venta) => total + venta.ganancia, 0);
+});
+const ventasPorFecha = computed(() => {
+    let ventasPorFecha = {};
+    ventas.value.forEach((venta) => {
+        if (!ventasPorFecha[venta.fecha]) {
+            ventasPorFecha[venta.fecha] = {
+                productos: [],
+                totalGastoIngredientes: 0,
+                totalFacturacion: 0,
+                totalGanancias: 0,
+            };
+        }
+        ventasPorFecha[venta.fecha].productos.push(venta.nombreProducto);
+        ventasPorFecha[venta.fecha].totalGastoIngredientes +=
+            venta.ingredientes.reduce(
+                (total, ingrediente) => total + ingrediente.precio,
+                0
+            );
+        ventasPorFecha[venta.fecha].totalFacturacion += venta.facturacion;
+        ventasPorFecha[venta.fecha].totalGanancias += venta.ganancia;
+    });
+    // Convert the object to an array and sort it by date in descending order
+    return Object.entries(ventasPorFecha)
+        .sort(([fechaA], [fechaB]) => fechaB.localeCompare(fechaA))
+        .reduce((obj, [fecha, data]) => ({ ...obj, [fecha]: data }), {});
 });
 
 cargarVentas();

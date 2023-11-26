@@ -4,7 +4,9 @@
         <!-- Sección de Nombre de la Venta y Fecha -->
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title">{{ venta.nombreProducto }}</h5>
+                <h5 class="card-title text-center">
+                    {{ venta.nombreProducto }}
+                </h5>
                 <p><strong>Fecha:</strong> {{ venta.fecha }}</p>
             </div>
         </div>
@@ -12,18 +14,19 @@
         <!-- Sección de Ingredientes -->
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title">Ingredientes</h5>
-                <ul>
+                <h5 class="card-title text-center">Ingredientes</h5>
+                <ul class="list-group">
                     <li
+                        class="list-group-item"
                         v-for="(ingrediente, index) in venta.ingredientes"
                         :key="index"
                     >
-                        {{ ingrediente.nombre }}: {{ ingrediente.precio }}
+                        {{ ingrediente.nombre }}: {{ ingrediente.precio }} Bs.
                     </li>
                 </ul>
-                <p>
-                    <strong>Total de gasto de los ingredientes:</strong>
-                    {{ totalGastoIngredientes }}
+                <p class="mt-3 mx-2">
+                    <strong>Total:</strong>
+                    {{ totalGastoIngredientes }} Bs.
                 </p>
             </div>
         </div>
@@ -31,11 +34,12 @@
         <!-- Sección de Facturación y Ganancias -->
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title">Facturación y Ganancias</h5>
+                <h5 class="card-title text-center">Facturación y Ganancias</h5>
                 <p>
-                    <strong>Total facturación:</strong> {{ venta.facturacion }}
+                    <strong>Facturación:</strong>
+                    {{ venta.facturacion }} Bs.
                 </p>
-                <p><strong>Ganancia:</strong> {{ venta.ganancia }}</p>
+                <p><strong>Ganancia:</strong> {{ venta.ganancia }} Bs.</p>
             </div>
         </div>
     </div>

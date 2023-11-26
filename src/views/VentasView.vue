@@ -14,32 +14,37 @@
                         class="d-flex justify-content-between mb-3 border-bottom pb-2"
                     >
                         <strong>Fecha:</strong>
-                        <span>{{ venta.fechaFormateada }}</span>
+                        <span>{{ venta.fecha }}</span>
                     </div>
 
                     <div
                         class="d-flex justify-content-between mb-3 border-bottom pb-2"
                     >
-                        <strong>Total de gasto de los ingredientes:</strong>
-                        <span>{{
-                            venta.ingredientes.reduce(
-                                (total, ingrediente) =>
-                                    total + ingrediente.precio,
-                                0
-                            )
-                        }}</span>
+                        <strong>Ingredientes:</strong>
+                        <span
+                            >{{
+                                venta.ingredientes.reduce(
+                                    (total, ingrediente) =>
+                                        total + ingrediente.precio,
+                                    0
+                                )
+                            }}
+                            Bs.</span
+                        >
                     </div>
                     <div
                         class="d-flex justify-content-between mb-3 border-bottom pb-2"
                     >
-                        <strong>Total facturación:</strong>
-                        <span>{{ venta.facturacion }}</span>
+                        <strong>Facturación:</strong>
+                        <span>{{ venta.facturacion }} Bs.</span>
                     </div>
                     <div
                         class="d-flex justify-content-between mb-3 border-bottom pb-2"
                     >
                         <strong>Ganancia:</strong>
-                        <span class="fw-bold fs-6">{{ venta.ganancia }}</span>
+                        <span class="fw-bold fs-6"
+                            >{{ venta.ganancia }} Bs.</span
+                        >
                     </div>
 
                     <div class="d-flex justify-content-between">
@@ -57,6 +62,18 @@
                         >
                             Ver
                         </button>
+                        <button
+                            v-if="
+                                auth.currentUser.email ===
+                                    'rkorodri@gmail.com' &&
+                                venta.userId === auth.currentUser.uid
+                            "
+                            id="button"
+                            @click="eliminar(venta.id)"
+                            class="btn btn-danger"
+                        >
+                            Eliminar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -69,9 +86,16 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { auth, db } from '../../firebase';
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import {
+    collection,
+    getDocs,
+    orderBy,
+    query,
+    where,
+    deleteDoc,
+    doc,
+} from 'firebase/firestore';
 import Menu from '../components/Menu.vue';
-import { format } from 'date-fns';
 
 const ventas = ref([]);
 const router = useRouter();
@@ -88,7 +112,6 @@ const cargarVentas = async () => {
             id: doc.id,
             ...doc.data(),
         };
-        venta.fechaFormateada = format(new Date(venta.fecha), 'dd-MM-yyyy');
         return venta;
     });
 };
@@ -103,6 +126,10 @@ const editar = (id) => {
 
 const ver = (id) => {
     router.push(`/ventas/ver/${id}`);
+};
+const eliminar = async (id) => {
+    await deleteDoc(doc(db, 'ventas', id));
+    cargarVentas();
 };
 cargarVentas();
 </script>
