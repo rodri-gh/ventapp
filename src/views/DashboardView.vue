@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="mt-3 d-flex justify-content-end">
-            <button @click="descargarPDF" class="btn btn-outline-danger mb-3">
+            <button @click="descargarPDF" class="btn btn-danger mb-3">
                 <i class="bi bi-file-earmark-pdf-fill"></i> PDF
             </button>
         </div>
