@@ -86,7 +86,7 @@
                     step="0.01"
                     id="facturacion"
                     class="form-control border-dark"
-                    placeholder="0"
+                    
                 />
             </div>
             <div class="mb-3">
